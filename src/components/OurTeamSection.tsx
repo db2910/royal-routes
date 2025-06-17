@@ -29,31 +29,31 @@ export default function OurTeamSection({ onViewTeamMember }: OurTeamSectionProps
     },
     {
       id: "member2",
-      name: "Niyirora Ted Manzi",
-      position: "Head of Operations",
-      imageUrl: "https://via.placeholder.com/150/B8860B/001934?text=COO",
+      name: "Kanobana Clarise",
+      position: "Human Resource",
+      imageUrl: "https://via.placeholder.com/150/001934/B8860B?text=Clarise", // Adjusted placeholder text for her name
       experienceDescription:
-        "Marie Claire meticulously manages all ground operations, ensuring every tour and transport service is executed seamlessly and efficiently across Rwanda.",
-      email: "marie.u@royalroutes.com",
-    },
-    {
-      id: "member3",
-      name: "Niyirora Don Beni",
-      position: "Lead Tour Guide",
-      imageUrl: "https://via.placeholder.com/150/001934/B8860B?text=Guide",
-      experienceDescription:
-        "A certified national tour guide, David possesses extensive knowledge of Rwanda's diverse wildlife, rich history, and vibrant culture, making every tour insightful.",
-      email: "david.m@royalroutes.com",
-    },
-    {
-      id: "member4",
-      name: "Chantal Umutoni",
-      position: "Client Relations Manager",
-      imageUrl: "https://via.placeholder.com/150/B8860B/001934?text=CRM",
-      experienceDescription:
-        "Chantal is dedicated to client satisfaction, specializing in crafting personalized itineraries and providing prompt, friendly support to all our guests.",
-      email: "chantal.u@royalroutes.com",
-    },
+        "Kanobana Clarise is a dedicated Human Resource professional with a proven track record in talent management, employee relations, and fostering a positive workplace culture. Her expertise ensures effective recruitment, staff development, and the overall well-being of our team, contributing significantly to our operational excellence.",
+      email: "royalroute85@gmail.com",
+  },
+  {
+    id: "member3",
+    name: "Kanobana Vincent",
+    position: "Head of Drivers",
+    imageUrl: "https://via.placeholder.com/150/001934/B8860B?text=Vincent", // Adjusted placeholder text for his name
+    experienceDescription:
+      "As Head of Drivers, Kanobana Vincent brings extensive experience in fleet management and driver supervision. He is dedicated to upholding the highest standards of safety, punctuality, and professionalism across our driving team, ensuring every client's journey is smooth, secure, and enjoyable. Vincent's leadership is key to our reliable transportation services.",
+    email: "royalroute85@gmail.com",
+},
+{
+  id: "member4",
+  name: "Dieudonne",
+  position: "Travel Consultant",
+  imageUrl: "https://via.placeholder.com/150/B8860B/001934?text=Dieudonne", // Adjusted placeholder text for his name
+  experienceDescription:
+    "Dieudonne is a highly skilled Travel Consultant dedicated to curating exceptional travel experiences. With a keen eye for detail, he specializes in crafting personalized itineraries and providing prompt, friendly support, ensuring every client's journey through Rwanda is perfectly tailored and memorable.",
+  email: "royalroute85@gmail.com",
+},
     {
       id: "member5",
       name: "Niyirora Don Beni",
@@ -62,15 +62,6 @@ export default function OurTeamSection({ onViewTeamMember }: OurTeamSectionProps
       experienceDescription:
         "Don Beni is our Software Engineer & IT Support Specialist, expertly developing efficient software and providing comprehensive IT support. He ensure our technology operates seamlessly for everyone.",
       email: "donkyleben@gmail.com",
-    },
-    {
-      id: "member6",
-      name: "Isabelle Mukantwari",
-      position: "Event Coordinator",
-      imageUrl: "https://via.placeholder.com/150/B8860B/001934?text=Events",
-      experienceDescription:
-        "Isabelle is our expert in planning and executing diverse events, from large corporate retreats to intimate special celebrations, ensuring every detail is perfect.",
-      email: "isabelle.m@royalroutes.com",
     },
   ]
 
