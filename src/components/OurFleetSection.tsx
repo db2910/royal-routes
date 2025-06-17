@@ -18,13 +18,13 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
       name: "Toyota Land Cruiser V8",
       shortDescription: "Premium 4WD vehicle perfect for safari adventures and rough terrain exploration.",
       detailedDescription: "Detailed description for Toyota Land Cruiser V8...", // Add detailed description
-      mainImage: "/images/vehicles/land4.jpg",
+      mainImage: "/images/vehicles/land4.JPG",
     galleryImages: [
-      "/images/vehicles/land4.jpg",
-      "/images/vehicles/land5.jpg",
-      "/images/vehicles/land6.jpg",
-      "/images/vehicles/land7.jpg",
-      "/images/vehicles/land8.jpg",
+      "/images/vehicles/land4.JPG",
+      "/images/vehicles/land5.JPG",
+      "/images/vehicles/land6.JPG",
+      "/images/vehicles/land7.JPG",
+      "/images/vehicles/land8.JPG",
     ],
       capabilities: [
         { icon: "users", text: "7 Passengers" },
@@ -53,8 +53,8 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
         "Experience the pinnacle of luxury and capability with the Land Rover Range Rover. This iconic SUV offers a supremely comfortable ride, advanced technology, and robust off-road prowess, making it perfect for executive travel, family adventures, or exploring Rwanda's diverse landscapes in style. Its opulent interior, intuitive infotainment, and powerful engine ensure every journey is an indulgence. Equipped with advanced safety features and a refined automatic transmission, it delivers a smooth and secure drive on any terrain.",
       mainImage: "/images/vehicles/range.png", // Placeholder - you'd replace with the actual path to the main image
       galleryImages: [
-        "/images/vehicles/range.png",
-        "/images/vehicles/range1.png", 
+        "/images/vehicles/range.PNG",
+        "/images/vehicles/range1.PNG", 
       ],
       capabilities: [
         { icon: "users", text: "4-5 Passengers" }, // Standard seating for a luxury SUV
@@ -149,12 +149,12 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
         "The Mercedes-Benz C-Class combines sophisticated design with dynamic performance, making it an ideal choice for business travelers, couples, or individuals seeking a premium driving experience in Rwanda. Its meticulously crafted interior offers comfort and advanced features, while its responsive engine and smooth automatic transmission ensure a pleasurable journey whether navigating city streets or cruising on highways. Experience the renowned Mercedes-Benz luxury and reliability in this stylish sedan.",
       mainImage: "/images/vehicles/benzc.jpg", // Placeholder - replace with the actual path to your main C-Class image
       galleryImages: [
-        "/images/vehicles/benzc.jpg", // Placeholder for interior shot
-        "/images/vehicles/benzc1.jpg",    // Placeholder for side view
-        "/images/vehicles/benzc2.jpg",
-        "/images/vehicles/benzc3.jpg",
-        "/images/vehicles/benzc4.jpg",
-        "/images/vehicles/benzc6.jpg",    // Placeholder for rear view
+        "/images/vehicles/benzc.JPG", // Placeholder for interior shot
+        "/images/vehicles/benzc1.JPG",    // Placeholder for side view
+        "/images/vehicles/benzc2.JPG",
+        "/images/vehicles/benzc3.JPG",
+        "/images/vehicles/benzc4.JPG",
+        "/images/vehicles/benzc6.JPG",    // Placeholder for rear view
         // Add more as needed, e.g., "/images/benzc-front-quarter.jpg"
       ],
       capabilities: [
@@ -185,13 +185,13 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
         "The Toyota Corolla Hatchback is renowned for its exceptional fuel efficiency, legendary reliability, and easy maneuverability, making it an ideal choice for navigating Kigali's urban landscape and short excursions. Its compact size belies a surprisingly spacious interior for up to five passengers, providing comfort for daily errands or quick getaways. With a dependable engine and user-friendly features, this Corolla offers a practical and cost-effective solution for your transportation needs in Rwanda.",
       mainImage: "/images/vehicles/col1.jpg", // Placeholder - replace with the actual path to your main image
       galleryImages: [
-        "/images/vehicles/col.jpg",    // Placeholder for front view
-        "/images/vehicles/col1.jpg", // Placeholder for interior shot
-        "/images/vehicles/col2.jpg",
-        "/images/vehicles/col3.jpg",
-        "/images/vehicles/col4.jpg",
-        "/images/vehicles/col5.jpg",
-        "/images/vehicles/col6.jpg",
+        "/images/vehicles/col.JPG",    // Placeholder for front view
+        "/images/vehicles/col1.JPG", // Placeholder for interior shot
+        "/images/vehicles/col2.JPG",
+        "/images/vehicles/col3.JPG",
+        "/images/vehicles/col4.JPG",
+        "/images/vehicles/col5.JPG",
+        "/images/vehicles/col6.JPG",
            // Another detail shot
       ],
       capabilities: [
