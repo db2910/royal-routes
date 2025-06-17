@@ -18,13 +18,13 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
       name: "Toyota Land Cruiser V8",
       shortDescription: "Premium 4WD vehicle perfect for safari adventures and rough terrain exploration.",
       detailedDescription: "Detailed description for Toyota Land Cruiser V8...", // Add detailed description
-      mainImage: "/images/vehicles/land4.JPG",
+      mainImage: "/images/vehicles/land4.jpg",
     galleryImages: [
-      "/images/vehicles/land4.JPG",
-      "/images/vehicles/land5.JPG",
-      "/images/vehicles/land6.JPG",
-      "/images/vehicles/land7.JPG",
-      "/images/vehicles/land8.JPG",
+      "/images/vehicles/land4.jpg",
+      "/images/vehicles/land5.jpg",
+      "/images/vehicles/land6.jpg",
+      "/images/vehicles/land7.jpg",
+      "/images/vehicles/land8.jpg",
     ],
       capabilities: [
         { icon: "users", text: "7 Passengers" },
@@ -149,12 +149,12 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
         "The Mercedes-Benz C-Class combines sophisticated design with dynamic performance, making it an ideal choice for business travelers, couples, or individuals seeking a premium driving experience in Rwanda. Its meticulously crafted interior offers comfort and advanced features, while its responsive engine and smooth automatic transmission ensure a pleasurable journey whether navigating city streets or cruising on highways. Experience the renowned Mercedes-Benz luxury and reliability in this stylish sedan.",
       mainImage: "/images/vehicles/benzc.jpg", // Placeholder - replace with the actual path to your main C-Class image
       galleryImages: [
-        "/images/vehicles/benzc.JPG", // Placeholder for interior shot
-        "/images/vehicles/benzc1.JPG",    // Placeholder for side view
-        "/images/vehicles/benzc2.JPG",
-        "/images/vehicles/benzc3.JPG",
-        "/images/vehicles/benzc4.JPG",
-        "/images/vehicles/benzc6.JPG",    // Placeholder for rear view
+        "/images/vehicles/benzc.jpg", // Placeholder for interior shot
+        "/images/vehicles/benzc1.jpg",    // Placeholder for side view
+        "/images/vehicles/benzc2.jpg",
+        "/images/vehicles/benzc3.jpg",
+        "/images/vehicles/benzc4.jpg",
+        "/images/vehicles/benzc6.jpg",    // Placeholder for rear view
         // Add more as needed, e.g., "/images/benzc-front-quarter.jpg"
       ],
       capabilities: [
@@ -185,13 +185,13 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
         "The Toyota Corolla Hatchback is renowned for its exceptional fuel efficiency, legendary reliability, and easy maneuverability, making it an ideal choice for navigating Kigali's urban landscape and short excursions. Its compact size belies a surprisingly spacious interior for up to five passengers, providing comfort for daily errands or quick getaways. With a dependable engine and user-friendly features, this Corolla offers a practical and cost-effective solution for your transportation needs in Rwanda.",
       mainImage: "/images/vehicles/col1.jpg", // Placeholder - replace with the actual path to your main image
       galleryImages: [
-        "/images/vehicles/col.JPG",    // Placeholder for front view
-        "/images/vehicles/col1.JPG", // Placeholder for interior shot
-        "/images/vehicles/col2.JPG",
-        "/images/vehicles/col3.JPG",
-        "/images/vehicles/col4.JPG",
-        "/images/vehicles/col5.JPG",
-        "/images/vehicles/col6.JPG",
+        "/images/vehicles/col.jpg",    // Placeholder for front view
+        "/images/vehicles/col1.jpg", // Placeholder for interior shot
+        "/images/vehicles/col2.jpg",
+        "/images/vehicles/col3.jpg",
+        "/images/vehicles/col4.jpg",
+        "/images/vehicles/col5.jpg",
+        "/images/vehicles/col6.jpg",
            // Another detail shot
       ],
       capabilities: [
