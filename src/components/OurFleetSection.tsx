@@ -51,7 +51,7 @@ export default function OurFleetSection({ onBookClick }: OurFleetSectionProps) {
       shortDescription: "Premium luxury SUV for unparalleled comfort and versatile performance.",
       detailedDescription:
         "Experience the pinnacle of luxury and capability with the Land Rover Range Rover. This iconic SUV offers a supremely comfortable ride, advanced technology, and robust off-road prowess, making it perfect for executive travel, family adventures, or exploring Rwanda's diverse landscapes in style. Its opulent interior, intuitive infotainment, and powerful engine ensure every journey is an indulgence. Equipped with advanced safety features and a refined automatic transmission, it delivers a smooth and secure drive on any terrain.",
-      mainImage: "/images/vehicles/range.png", // Placeholder - you'd replace with the actual path to the main image
+      mainImage: "/images/vehicles/range.PNG", // Placeholder - you'd replace with the actual path to the main image
       galleryImages: [
         "/images/vehicles/range.PNG",
         "/images/vehicles/range1.PNG", 
