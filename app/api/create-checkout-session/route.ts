@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/booking-cancelled`,
     })
     return NextResponse.json({ url: session.url })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Stripe error' }, { status: 500 })
+  } catch (error: any) {
+    console.error("Checkout session error:", error);
+    return NextResponse.json({ error: error.message || String(error) }, { status: 500 })
   }
 } 
