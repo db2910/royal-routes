@@ -23,9 +23,10 @@ export const metadata: Metadata = {
     title: "Royal Routes - Premium Travel & Tourism in Rwanda",
     description: "Discover the beauty of Rwanda with Royal Routes. Premium tours, car rentals, accommodations, and event management services.",
   },
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
 }
+
+export const viewport = "width=device-width, initial-scale=1"
 
 export default function RootLayout({
   children,
