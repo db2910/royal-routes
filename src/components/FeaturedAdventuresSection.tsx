@@ -1,15 +1,32 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import TourCard from "./TourCard"
+import { supabase } from "@/src/lib/supabase"
 
-interface FeaturedAdventuresSectionProps {
-  onBookClick: (tourTitle: string) => void
-}
-
-export default function FeaturedAdventuresSection({ onBookClick }: FeaturedAdventuresSectionProps) {
+export default function FeaturedAdventuresSection() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [tours, setTours] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from("tours")
+        .select("id, title, short_description, main_image, is_active")
+        .eq("is_active", true)
+        .limit(4)
+      if (!error && data) {
+        setTours(data)
+      } else {
+        setTours([])
+      }
+      setLoading(false)
+    }
+    fetchTours()
+  }, [])
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -20,46 +37,6 @@ export default function FeaturedAdventuresSection({ onBookClick }: FeaturedAdven
       })
     }
   }
-
-  // Placeholder tour data
-  const tours = [
-    {
-      imageUrl: "/images/tours/volca1.jpg",
-      title: "Volcanoes National Park Gorilla Trek",
-      description:
-        "Experience the magnificent mountain gorillas in their natural habitat. A once-in-a-lifetime adventure.",
-      ctaText: "Book",
-      ctaLink: "/tours/volcanoes-gorilla-trek",
-      tourId: "volcanoes-gorilla-trek",
-    },
-    {
-      imageUrl: "/images/tours/kivu6.jpg",
-      title: "Lake Kivu Scenic Escape",
-      description:
-        "Discover the beauty of Lake Kivu. Enjoy boat rides, stunning sunsets, and peaceful lakeside relaxation.",
-      ctaText: "Book",
-      ctaLink: "/tours/lake-kivu-scenic-tour",
-      tourId: "lake-kivu-scenic-tour",
-    },
-    {
-      imageUrl: "/images/tours/nyungwe1.jpg",
-      title: "Nyungwe Forest Canopy Walk & Primates",
-      description:
-        "Walk among the treetops in one of Africa's oldest rainforests. Spot primates and enjoy breathtaking forest views.",
-      ctaText: "Book",
-      ctaLink: "/tours/nyungwe-forest-canopy-walk",
-      tourId: "nyungwe-forest-canopy-walk",
-    },
-    {
-      imageUrl: "/images/tours/kigali3.jpg",
-      title: "Kigali City & Cultural Exploration",
-      description:
-        "Explore Rwanda's vibrant capital. Visit museums, markets, and learn about the country's rich history and culture.",
-      ctaText: "Book",
-      ctaLink: "/tours/kigali-city-cultural-tour",
-      tourId: "kigali-city-cultural-tour",
-    },
-  ]
 
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
@@ -95,18 +72,28 @@ export default function FeaturedAdventuresSection({ onBookClick }: FeaturedAdven
             className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {tours.map((tour, index) => (
+            {loading ? (
+              <div className="w-full flex justify-center items-center min-h-[200px]">
+                <span className="text-gray-500 text-lg">Loading featured tours...</span>
+              </div>
+            ) : tours.length === 0 ? (
+              <div className="w-full flex justify-center items-center min-h-[200px]">
+                <span className="text-gray-500 text-lg">No featured tours available.</span>
+              </div>
+            ) : (
+              tours.map((tour) => (
               <TourCard
-                key={index}
-                imageUrl={tour.imageUrl}
+                  key={tour.id}
+                  imageUrl={tour.main_image || "/placeholder.svg"}
                 title={tour.title}
-                description={tour.description}
-                ctaText={tour.ctaText}
-                ctaLink={tour.ctaLink}
-                tourId={tour.tourId}
-                onBookClick={onBookClick}
+                  description={tour.short_description}
+                  ctaText="Book"
+                  ctaLink={`/tours/${tour.id}`}
+                  tourId={tour.id}
+                  tour={tour}
               />
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

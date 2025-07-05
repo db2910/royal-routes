@@ -5,7 +5,7 @@ import Link from "next/link"
 
 interface Event {
   id: string
-  imageUrl: string
+  cover_image: string
   title: string
   pricePerPerson: string
   description: string
@@ -22,7 +22,7 @@ export default function EventCard({ event }: EventCardProps) {
       {/* Image Section */}
       <div className="md:w-1/3 relative h-48 md:h-auto">
         <Image
-          src={event.imageUrl || "/placeholder.svg?height=200&width=300&text=Event"}
+          src={event.cover_image || "/placeholder.svg?height=200&width=300&text=Event"}
           alt={event.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"

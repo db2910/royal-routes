@@ -18,11 +18,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react"
-import type { Car } from "@/src/data/carsData"
 
 interface CarCardProps {
-  car: Car
-  onBookClick: (carName: string) => void
+  car: any
+  onBookClick?: (car: any) => void
 }
 
 export default function CarCard({ car, onBookClick }: CarCardProps) {
@@ -57,16 +56,22 @@ export default function CarCard({ car, onBookClick }: CarCardProps) {
   const handleBookClickInternal = (e: React.MouseEvent) => {
     e.preventDefault() // Prevent link navigation
     e.stopPropagation() // Prevent event bubbling
-    onBookClick(car.name)
+    if (onBookClick) onBookClick(car)
   }
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % car.galleryImages.length)
+    const galleryImages = car.galleryImages || []
+    setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)
   }
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + car.galleryImages.length) % car.galleryImages.length)
+    const galleryImages = car.galleryImages || []
+    setCurrentImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
   }
+
+  // Safely get capabilities with fallback
+  const capabilities = car.capabilities || []
+  const galleryImages = car.galleryImages || []
 
   return (
     <>
@@ -93,9 +98,12 @@ export default function CarCard({ car, onBookClick }: CarCardProps) {
             </h3>
             <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{car.shortDescription}</p>
 
+            {/* Price Per Day */}
+            <div className="mb-2 text-[#B8860B] font-bold text-lg">{car.pricePerDay ? `$${car.pricePerDay}/day` : null}</div>
+
             {/* Capabilities */}
             <div className="grid grid-cols-2 gap-2 mb-5">
-              {car.capabilities.slice(0, 4).map((capability, index) => (
+              {capabilities.slice(0, 4).map((capability: any, index: number) => (
                 <div key={index} className="flex items-center space-x-2 text-xs text-gray-600">
                   <span className="text-[#B8860B]">{getCapabilityIcon(capability.icon)}</span>
                   <span>{capability.text}</span>
@@ -113,13 +121,23 @@ export default function CarCard({ car, onBookClick }: CarCardProps) {
                 <Eye className="w-4 h-4" />
                 <span>Gallery</span>
               </button>
-              <button
-                onClick={handleBookClickInternal}
-                className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-3 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 text-sm"
-                aria-label={`Book ${car.name}`}
-              >
-                Book
-              </button>
+              {onBookClick ? (
+                <button
+                  onClick={handleBookClickInternal}
+                  className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-3 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 text-sm text-center"
+                  aria-label={`Book ${car.name}`}
+                >
+                  Book
+                </button>
+              ) : (
+                <Link
+                  href={`/cars/${car.id}`}
+                  className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-3 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 text-sm text-center"
+                  aria-label={`Book ${car.name}`}
+                >
+                  Book
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -139,14 +157,14 @@ export default function CarCard({ car, onBookClick }: CarCardProps) {
 
             <div className="relative h-72 sm:h-96 md:h-[500px]">
               <Image
-                src={car.galleryImages[currentImageIndex] || "/placeholder.svg"}
+                src={galleryImages[currentImageIndex] || "/placeholder.svg"}
                 alt={`${car.name} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-contain rounded-md"
               />
             </div>
 
-            {car.galleryImages.length > 1 && (
+            {galleryImages.length > 1 && (
               <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={prevImage}
@@ -156,7 +174,7 @@ export default function CarCard({ car, onBookClick }: CarCardProps) {
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <span className="text-white text-sm">
-                  {currentImageIndex + 1} / {car.galleryImages.length}
+                  {currentImageIndex + 1} / {galleryImages.length}
                 </span>
                 <button
                   onClick={nextImage}

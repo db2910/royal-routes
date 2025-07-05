@@ -5,10 +5,9 @@ import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { MapPin, Clock, DollarSign } from "lucide-react"
-import type { Tour } from "@/src/data/toursData"
 
 interface TourCardHorizontalProps {
-  tour: Tour
+  tour: any
   onBookClick: (tourTitle: string) => void
 }
 
@@ -25,7 +24,7 @@ export default function TourCardHorizontal({ tour, onBookClick }: TourCardHorizo
         {/* Image Section - Left side on desktop */}
         <div className="md:w-2/5 relative h-64 md:h-auto">
           <Image
-            src={tour.mainImage || "/placeholder.svg"}
+            src={tour.main_image || "/placeholder.svg"}
             alt={tour.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -58,15 +57,15 @@ export default function TourCardHorizontal({ tour, onBookClick }: TourCardHorizo
                   <span className="line-clamp-1">{tour.destination}</span>
                 </div>
               )}
-              {tour.pricePerPerson && (
+              {tour.price_per_person && (
                 <div className="flex items-center">
                   <DollarSign className="w-4 h-4 mr-1.5 text-[#B8860B]" />
-                  <span className="font-semibold text-green-600">{tour.pricePerPerson}</span>
+                  <span className="font-semibold text-green-600">{tour.price_per_person}</span>
                 </div>
               )}
             </div>
 
-            <p className="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed">{tour.shortDescription}</p>
+            <p className="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed">{tour.short_description}</p>
           </div>
 
           {/* Action Buttons */}

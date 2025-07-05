@@ -11,7 +11,7 @@ interface TourCardProps {
   ctaText: string
   ctaLink: string
   tourId: string
-  onBookClick: (tourTitle: string) => void
+  onBookClick?: (tour: Tour | string) => void
   tour?: Tour // Optional full tour object
 }
 
@@ -45,12 +45,21 @@ export default function TourCard({
           >
             Details
           </Link>
+          {onBookClick ? (
           <button
-            onClick={() => onBookClick(title)}
-            className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-4 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 shadow-md hover:shadow-lg"
+              onClick={() => onBookClick && onBookClick(tour || title)}
+              className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-4 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 shadow-md hover:shadow-lg text-center"
           >
             {ctaText}
           </button>
+          ) : (
+            <Link
+              href={`/tours/${tourId}`}
+              className="flex-1 bg-[#B8860B] text-[#001934] font-semibold py-2 px-4 rounded-lg hover:bg-[#B8860B]/90 transition-all duration-200 shadow-md hover:shadow-lg text-center"
+            >
+              {ctaText}
+            </Link>
+          )}
         </div>
       </div>
     </div>

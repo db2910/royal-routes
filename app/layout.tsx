@@ -1,70 +1,30 @@
 // app/layout.tsx
-import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Playfair_Display } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
-import Navbar from "@/src/components/Navbar"
-import Footer from "@/src/components/Footer"
-import WhatsAppButton from "@/src/components/WhatsAppButton"
-import BackToTopButton from "@/src/components/BackToTopButton"
+import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-arizona",
-})
 
 export const metadata: Metadata = {
-  title: "Royal Routes Tours and Transport",
-  description:
-    "Discover amazing places in Rwanda with our premium tours and transport services",
-
-  icons: {
-    icon: [
-      "/favicon.ico",
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" }
-    ],
-    apple: "/apple-touch-icon.png",
-    other: {
-      url: "/safari-pinned-tab.svg",
-      type: "image/svg+xml"
-    }
-  },
-
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#001934" }
-  ],
-
+  title: "Royal Routes - Premium Travel & Tourism in Rwanda",
+  description: "Discover the beauty of Rwanda with Royal Routes. Premium tours, car rentals, accommodations, and event management services.",
+  keywords: "Rwanda, tourism, travel, tours, car rental, accommodation, events, gorilla trekking, safari",
+  authors: [{ name: "Royal Routes" }],
   openGraph: {
-    title: "Royal Routes Tours and Transport",
-    description:
-      "Discover amazing places in Rwanda with our premium tours and transport services",
-    url: "https://your-domain.com",
-    siteName: "Royal Routes",
-    images: [
-      {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "Royal Routes Logo"
-      }
-    ],
+    title: "Royal Routes - Premium Travel & Tourism in Rwanda",
+    description: "Discover the beauty of Rwanda with Royal Routes. Premium tours, car rentals, accommodations, and event management services.",
+    type: "website",
     locale: "en_US",
-    type: "website"
   },
-
   twitter: {
     card: "summary_large_image",
-    title: "Royal Routes Tours and Transport",
-    description:
-      "Discover amazing places in Rwanda with our premium tours and transport services",
-    images: ["https://your-domain.com/android-chrome-512x512.png"],
-    creator: "@yourTwitterHandle"
-  }
+    title: "Royal Routes - Premium Travel & Tourism in Rwanda",
+    description: "Discover the beauty of Rwanda with Royal Routes. Premium tours, car rentals, accommodations, and event management services.",
+  },
+  viewport: "width=device-width, initial-scale=1",
+  robots: "index, follow",
 }
 
 export default function RootLayout({
@@ -73,13 +33,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} ${playfair.variable}`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <BackToTopButton />
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

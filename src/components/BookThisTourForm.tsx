@@ -8,9 +8,10 @@ import { CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 
 interface BookThisTourFormProps {
   eventName: string
+  pricePerPerson?: number
 }
 
-export default function BookThisTourForm({ eventName }: BookThisTourFormProps) {
+export default function BookThisTourForm({ eventName, pricePerPerson }: BookThisTourFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -23,6 +24,10 @@ export default function BookThisTourForm({ eventName }: BookThisTourFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
   const [statusMessage, setStatusMessage] = useState<string>("")
+
+  // Calculate prices
+  const totalPrice = pricePerPerson ? pricePerPerson * formData.people : 0;
+  const deposit = totalPrice * 0.5;
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {}
@@ -61,32 +66,42 @@ export default function BookThisTourForm({ eventName }: BookThisTourFormProps) {
     setStatusMessage("")
 
     try {
-      // Include the event name in the form data
-      const fullFormData = { ...formData, event: eventName }
-
-      // Send email using server action
-      const result = await sendFormEmail({
-        formType: "Tour Booking",
-        formData: fullFormData,
-        userEmail: formData.email,
-        userName: formData.name,
+      // Call Stripe API route
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "tour",
+          itemName: eventName,
+          price: totalPrice,
+          customerName: formData.name,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          people: formData.people,
+          arrivalDate: formData.arrivalDate,
+          message: formData.message,
+        }),
       })
-
-      if (result.success) {
-        setSubmitStatus("success")
-        setStatusMessage(result.message || "Booking submitted successfully! We'll contact you soon.")
-        setFormData({ name: "", phone: "", email: "", people: 1, arrivalDate: "", message: "" })
+      const data = await res.json()
+      if (res.ok && data.url) {
+        window.location.href = data.url
+        return
       } else {
-        setSubmitStatus("error")
-        setStatusMessage(result.message || "Failed to submit booking. Please try again.")
+        throw new Error(data.error || "Failed to create payment session")
       }
     } catch (error) {
       setSubmitStatus("error")
-      setStatusMessage("An unexpected error occurred. Please try again later.")
-      console.error("Form submission error:", error)
+      setStatusMessage("❌ " + (error instanceof Error ? error.message : "Failed to submit booking. Please try again."))
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(price)
   }
 
   return (
@@ -106,6 +121,12 @@ export default function BookThisTourForm({ eventName }: BookThisTourFormProps) {
             className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-100 text-gray-700 border border-gray-300 rounded-md cursor-not-allowed text-sm break-words overflow-ellipsis"
           />
         </div>
+
+        {pricePerPerson && (
+          <div className="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-[#001934]">
+            <div className="font-semibold">Price per person: {formatPrice(pricePerPerson)}</div>
+          </div>
+        )}
 
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -210,6 +231,14 @@ export default function BookThisTourForm({ eventName }: BookThisTourFormProps) {
             {errors.arrivalDate && <p className="text-xs text-red-500 mt-1">{errors.arrivalDate}</p>}
           </div>
         </div>
+
+        {pricePerPerson && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-sm text-[#001934] mb-2">
+            <div>Total price for {formData.people} {formData.people === 1 ? "person" : "people"}: <span className="font-bold">{formatPrice(totalPrice)}</span></div>
+            <div>Deposit (50%): <span className="font-bold">{formatPrice(deposit)}</span></div>
+            <div className="text-xs text-gray-500 mt-1">You will pay the deposit now. The balance is due later.</div>
+          </div>
+        )}
 
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
