@@ -24,6 +24,7 @@ export interface Car {
   capabilities: CarCapability[] // For CarCard display
   specifications: CarSpecification
   pricePerDay: string // Example: "$120/day"
+  is_active?: boolean // Indicates if the car is active
 }
 
 export const carsData: Car[] = [

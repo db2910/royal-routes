@@ -82,7 +82,7 @@ export default function TourDetailPage() {
     {
       icon: <DollarSign className="w-7 h-7 text-[#B8860B]" />,
       title: "Price",
-      value: tour.price_per_person || "Contact Us",
+      value: tour.price_per_person ? `$${tour.price_per_person} / Per person` : "Contact Us",
     },
     { icon: <CalendarDays className="w-7 h-7 text-[#B8860B]" />, title: "Duration", value: tour.duration },
     { icon: <MapPin className="w-7 h-7 text-[#B8860B]" />, title: "Destination", value: tour.destination },
@@ -189,7 +189,7 @@ export default function TourDetailPage() {
 
           {/* Sidebar (Right Column on Desktop) */}
           <aside className="lg:col-span-1 mt-12 lg:mt-0">
-            <BookThisTourForm eventName={tour.title} price={tour.price_per_person || 0} />
+            <BookThisTourForm eventName={tour.title} pricePerPerson={Number(tour.price_per_person) || 0} />
           </aside>
         </div>
       </div>

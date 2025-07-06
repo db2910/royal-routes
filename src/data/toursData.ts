@@ -11,7 +11,7 @@ export interface Tour {
   longDescription: string // For detail page
   mainImage: string // For card and hero on detail page
   galleryImages: string[] // For detail page gallery
-  pricePerPerson?: string // e.g., "$1500 / Per person"
+  pricePerPerson?: number // e.g., 1500
   duration: string // e.g., "5 Days"
   destination: string // e.g., "Volcanoes National Park, Lake Kivu"
   category?: string // e.g., "Gorilla Trekking", "Cultural"
@@ -36,7 +36,7 @@ export const toursData: Tour[] = [
       "/images/tours/volca4.jpg",
       "/images/tours/volca5.gif",
     ],
-    pricePerPerson: "$1500 / Per person",
+    pricePerPerson: 1500,
     duration: "1 Day Trek",
     destination: "Volcanoes National Park",
     category: "Gorilla Trekking",
@@ -72,7 +72,7 @@ export const toursData: Tour[] = [
       "/images/tours/kivu5.jpg",
       "/images/tours/kivu3.webp",
     ],
-    pricePerPerson: "$350 / Per person",
+    pricePerPerson: 350,
     duration: "2-3 Days",
     destination: "Lake Kivu (Gisenyi/Kibuye)",
     category: "Scenic & Relaxation",
@@ -120,7 +120,7 @@ export const toursData: Tour[] = [
       "/images/tours/nyungwe3.jpg",
       "/images/tours/nyungwe4.jpg",
     ],
-    pricePerPerson: "$450 / Per person",
+    pricePerPerson: 450,
     duration: "2-3 Days",
     destination: "Nyungwe Forest National Park",
     category: "Nature & Wildlife",
@@ -169,7 +169,7 @@ export const toursData: Tour[] = [
       "/images/tours/kigali2.jpg",
       "/images/tours/kigali1.jpg",
     ],
-    pricePerPerson: "$120 / Per person",
+    pricePerPerson: 120,
     duration: "1 Day",
     destination: "Kigali",
     category: "Cultural & City",
@@ -205,7 +205,7 @@ export const toursData: Tour[] = [
       "/images/tours/akagera4.jpg",
       "/images/tours/akagera5.jpg",
     ],
-    pricePerPerson: "$650 / Per person",
+    pricePerPerson: 650,
     duration: "2-3 Days",
     destination: "Akagera National Park",
     category: "Wildlife Safari",
@@ -247,7 +247,7 @@ export const toursData: Tour[] = [
       "/images/tours/culture4.webp",
       "/images/tours/culture5.jpg",
     ],
-    pricePerPerson: "$280 / Per person",
+    pricePerPerson: 280,
     duration: "2 Days",
     destination: "Various Cultural Sites",
     category: "Cultural Heritage",

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import CarCard from "@/src/components/CarCard"
-import BookingModal from "@/src/components/BookingModal"
 import { supabase } from "@/src/lib/supabase"
 import type { Car } from "@/src/data/carsData"
 
@@ -119,7 +118,7 @@ export default function CarRentalPage() {
                       animationDelay: `${(index % (displayedCars.length <= INITIAL_ITEMS_DISPLAYED ? INITIAL_ITEMS_DISPLAYED : ITEMS_PER_LOAD)) * 100}ms`,
                     }}
                   >
-                    <CarCard car={car} onBookClick={() => handleOpenBookingModal(car)} />
+                    <CarCard car={car} />
                   </div>
                 ))}
               </div>
@@ -143,14 +142,6 @@ export default function CarRentalPage() {
           )}
         </div>
       </section>
-
-      <BookingModal
-        isOpen={isModalOpen}
-        onClose={handleCloseBookingModal}
-        itemName={selectedCar?.name || ""}
-        price={selectedCar ? parseFloat((selectedCar.pricePerDay || "").replace(/[^0-9.]/g, "")) || 0 : 0}
-        type="car"
-      />
     </div>
   )
 }

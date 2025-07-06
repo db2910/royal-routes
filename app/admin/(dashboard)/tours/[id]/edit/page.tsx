@@ -211,7 +211,7 @@ export default function EditTourPage() {
       const { error } = await supabase.from('tours').update({
         title,
         destination,
-        price_per_person: price,
+        price_per_person: parseFloat(price),
         duration,
         short_description: shortDesc,
         long_description: longDesc,
@@ -254,7 +254,7 @@ export default function EditTourPage() {
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <label className="block text-sm font-medium text-[#001934] mb-1">Price (USD)</label>
-            <input type="text" value={price} onChange={e => setPrice(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+            <input type="number" value={price} onChange={e => setPrice(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
           </div>
           <div className="flex-1">
             <label className="block text-sm font-medium text-[#001934] mb-1">Duration</label>

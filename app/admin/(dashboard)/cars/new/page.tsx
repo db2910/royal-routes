@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { supabase } from "@/src/lib/supabase"
 import { motion, AnimatePresence } from "framer-motion"
-import ImageUpload from "@/src/components/ImageUpload"
+import ImageUpload from "@/src/components/SmartImageUpload"
 import { X } from "lucide-react"
 import Link from "next/link"
 import { nanoid } from 'nanoid'
@@ -186,14 +186,14 @@ export default function AddCarPage() {
             <div className="space-y-4">
               <div>
                 <label className="block font-semibold mb-2 text-[#001934]">Main Image <span className="text-red-500">*</span></label>
-                <ImageUpload onImageUpload={handleMainImageUpload} currentImage={form.main_image} folder="" />
+                <ImageUpload images={form.main_image ? [form.main_image] : []} onImagesChange={(urls) => handleMainImageUpload(urls[0] || '')} folder="" />
                 {form.main_image && (
                   <div className="mt-2"><img src={form.main_image} alt="Main" className="w-32 h-20 object-cover rounded border" /></div>
                 )}
               </div>
               <div>
                 <label className="block font-semibold mb-2 text-[#001934]">Gallery Images</label>
-                <ImageUpload onImageUpload={handleGalleryImageUpload} folder="gallery" />
+                <ImageUpload images={form.gallery_images} onImagesChange={handleGalleryImageUpload} folder="gallery" />
                 <div className="flex gap-2 mt-2 flex-wrap">
                   {form.gallery_images.map((img, idx) => (
                     <div key={idx} className="relative group">

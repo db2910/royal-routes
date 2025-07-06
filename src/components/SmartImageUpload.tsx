@@ -4,38 +4,72 @@ import { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import { supabase } from "@/src/lib/supabase"
 import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"
 
-interface ImageUploadProps {
+interface SmartImageUploadProps {
   images: string[]
   onImagesChange: (images: string[]) => void
   maxImages?: number
   className?: string
-  folder?: string
+  folder?: string // Optional override
 }
 
-export default function ImageUpload({ 
+export default function SmartImageUpload({ 
   images = [], 
   onImagesChange, 
   maxImages = 10,
   className = "",
   folder = ""
-}: ImageUploadProps) {
+}: SmartImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({})
+  const pathname = usePathname()
 
-  // Determine bucket based on folder
-  const getBucketName = () => {
-    if (folder === "gallery" || folder === "") {
-      return "cars" // For car images
+  // Automatically detect content type based on URL path
+  const detectContentType = () => {
+    if (pathname.includes('/cars/')) {
+      return 'cars'
     }
-    if (folder === "tours" || folder === "tour-gallery") {
-      return "tours" // For tour images
+    if (pathname.includes('/tours/')) {
+      return 'tours'
     }
-    if (folder === "accomodation" || folder === "hotel-gallery") {
-      return "accomodation" // For accommodation images (single 'm')
+    if (pathname.includes('/accomodation/') || pathname.includes('/hotels/') || pathname.includes('/apartments/')) {
+      return 'accomodation'
     }
-    return "events" // For events
+    if (pathname.includes('/events/')) {
+      return 'events'
+    }
+    // Default fallback
+    return 'events'
+  }
+
+  // Determine bucket and folder based on content type
+  const getBucketAndFolder = () => {
+    const contentType = detectContentType()
+    
+    switch (contentType) {
+      case 'cars':
+        return {
+          bucket: 'cars',
+          folder: folder || (images.length === 0 ? '' : 'gallery') // Main image: no folder, Gallery: 'gallery'
+        }
+      case 'tours':
+        return {
+          bucket: 'tours',
+          folder: folder || 'tours'
+        }
+      case 'accomodation':
+        return {
+          bucket: 'accomodation',
+          folder: folder || 'accomodation'
+        }
+      case 'events':
+      default:
+        return {
+          bucket: 'events',
+          folder: folder || 'events'
+        }
+    }
   }
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -46,18 +80,22 @@ export default function ImageUpload({
 
     setUploading(true)
     const newImages = [...(images || [])]
-    const bucketName = getBucketName()
+    const { bucket, folder: uploadFolder } = getBucketAndFolder()
+    
+    console.log('Uploading to bucket:', bucket, 'folder:', uploadFolder)
     
     const uploadPromises = acceptedFiles.map(async (file) => {
       try {
         // Generate unique filename
         const fileExt = file.name.split('.').pop()
         const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
-        const filePath = folder ? `${folder}/${fileName}` : fileName
+        const filePath = uploadFolder ? `${uploadFolder}/${fileName}` : fileName
+
+        console.log('Uploading file:', file.name, 'to path:', filePath, 'in bucket:', bucket)
 
         // Upload to Supabase Storage
         const { data, error } = await supabase.storage
-          .from(bucketName)
+          .from(bucket)
           .upload(filePath, file, {
             cacheControl: '3600',
             upsert: false
@@ -65,14 +103,19 @@ export default function ImageUpload({
 
         if (error) {
           console.error('Upload error:', error)
-          throw error
+          throw new Error(`Upload failed: ${error.message}`)
         }
 
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
-          .from(bucketName)
+          .from(bucket)
           .getPublicUrl(filePath)
 
+        if (!publicUrl) {
+          throw new Error('Could not get public URL for uploaded file')
+        }
+
+        console.log('Successfully uploaded:', publicUrl)
         return publicUrl
       } catch (error) {
         console.error('Error uploading file:', error)
@@ -83,8 +126,9 @@ export default function ImageUpload({
     try {
       const uploadedUrls = await Promise.all(uploadPromises)
       onImagesChange([...newImages, ...uploadedUrls])
-    } catch (error) {
-      alert('Failed to upload some images. Please try again.')
+    } catch (error: any) {
+      console.error('Upload failed:', error)
+      alert(`Failed to upload images: ${error.message || 'Unknown error'}`)
     } finally {
       setUploading(false)
       setUploadProgress({})
@@ -110,11 +154,11 @@ export default function ImageUpload({
       // Extract file path from URL
       const urlParts = imageUrl.split('/')
       const fileName = urlParts[urlParts.length - 1]
-      const bucketName = getBucketName()
-      const filePath = folder ? `${folder}/${fileName}` : fileName
+      const { bucket, folder: uploadFolder } = getBucketAndFolder()
+      const filePath = uploadFolder ? `${uploadFolder}/${fileName}` : fileName
 
       const { error } = await supabase.storage
-        .from(bucketName)
+        .from(bucket)
         .remove([filePath])
 
       if (error) {
@@ -131,11 +175,13 @@ export default function ImageUpload({
     removeImage(index)
   }
 
+  const { bucket } = getBucketAndFolder()
+
   return (
     <div className={`space-y-4 ${className}`}>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Images ({(images || []).length}/{maxImages})
+          Images ({(images || []).length}/{maxImages}) - {bucket} bucket
         </label>
         
         {/* Dropzone */}

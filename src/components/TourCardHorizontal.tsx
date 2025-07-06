@@ -60,7 +60,7 @@ export default function TourCardHorizontal({ tour, onBookClick }: TourCardHorizo
               {tour.price_per_person && (
                 <div className="flex items-center">
                   <DollarSign className="w-4 h-4 mr-1.5 text-[#B8860B]" />
-                  <span className="font-semibold text-green-600">{tour.price_per_person}</span>
+                  <span className="font-semibold text-green-600">${tour.price_per_person} / Per person</span>
                 </div>
               )}
             </div>

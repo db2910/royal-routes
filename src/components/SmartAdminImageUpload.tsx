@@ -3,26 +3,77 @@
 import { useState, useRef } from "react"
 import { supabase } from "@/src/lib/supabase"
 import { Upload, X, Loader2 } from "lucide-react"
+import { usePathname } from "next/navigation"
 
-interface AdminImageUploadProps {
+interface SmartAdminImageUploadProps {
   onImageUpload: (url: string) => void
   currentImage?: string
-  folder?: string
+  folder?: string // Optional override
 }
 
-export default function AdminImageUpload({ onImageUpload, currentImage, folder = "" }: AdminImageUploadProps) {
+export default function SmartAdminImageUpload({ onImageUpload, currentImage, folder = "" }: SmartAdminImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const pathname = usePathname()
+
+  // Automatically detect content type based on URL path
+  const detectContentType = () => {
+    if (pathname.includes('/cars/')) {
+      return 'cars'
+    }
+    if (pathname.includes('/tours/')) {
+      return 'tours'
+    }
+    if (pathname.includes('/accomodation/') || pathname.includes('/hotels/') || pathname.includes('/apartments/')) {
+      return 'accomodation'
+    }
+    if (pathname.includes('/events/')) {
+      return 'events'
+    }
+    // Default fallback
+    return 'events'
+  }
+
+  // Determine bucket and folder based on content type
+  const getBucketAndFolder = () => {
+    const contentType = detectContentType()
+    
+    switch (contentType) {
+      case 'cars':
+        return {
+          bucket: 'cars',
+          folder: folder || '' // Main image: no folder
+        }
+      case 'tours':
+        return {
+          bucket: 'tours',
+          folder: folder || 'tours'
+        }
+      case 'accomodation':
+        return {
+          bucket: 'accomodation',
+          folder: folder || 'accomodation'
+        }
+      case 'events':
+      default:
+        return {
+          bucket: 'events',
+          folder: folder || 'events'
+        }
+    }
+  }
 
   const uploadToStorage = async (file: File): Promise<string> => {
     const fileExt = file.name.split('.').pop()
     const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
-    const filePath = folder ? `${folder}/${fileName}` : fileName
-    const bucketName = getBucketName()
+    const { bucket, folder: uploadFolder } = getBucketAndFolder()
+    const filePath = uploadFolder ? `${uploadFolder}/${fileName}` : fileName
+
+    console.log('Uploading file:', file.name, 'to path:', filePath, 'in bucket:', bucket)
 
     const { data, error } = await supabase.storage
-      .from(bucketName)
+      .from(bucket)
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false
@@ -30,17 +81,18 @@ export default function AdminImageUpload({ onImageUpload, currentImage, folder =
 
     if (error) {
       console.error('Upload error:', error)
-      throw new Error(error.message || 'Image upload failed')
+      throw new Error(`Upload failed: ${error.message}`)
     }
 
     const { data: { publicUrl } } = supabase.storage
-      .from(bucketName)
+      .from(bucket)
       .getPublicUrl(filePath)
 
     if (!publicUrl) {
       throw new Error('Could not get image URL')
     }
 
+    console.log('Successfully uploaded:', publicUrl)
     return publicUrl
   }
 
@@ -59,9 +111,9 @@ export default function AdminImageUpload({ onImageUpload, currentImage, folder =
     try {
       const url = await uploadToStorage(file)
       onImageUpload(url)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload failed:', error)
-      alert('Failed to upload image. Please try again.')
+      alert(`Failed to upload image: ${error.message || 'Unknown error'}`)
     } finally {
       setUploading(false)
     }
@@ -98,22 +150,11 @@ export default function AdminImageUpload({ onImageUpload, currentImage, folder =
     fileInputRef.current?.click()
   }
 
-  // Determine bucket based on folder
-  const getBucketName = () => {
-    if (folder === "gallery" || folder === "") {
-      return "cars" // For car images
-    }
-    if (folder === "tours" || folder === "tour-gallery") {
-      return "tours" // For tour images
-    }
-    if (folder === "accomodation" || folder === "hotel-gallery") {
-      return "accomodation" // For accommodation images (single 'm')
-    }
-    return "events" // For events
-  }
+  const { bucket } = getBucketAndFolder()
 
   return (
     <div className="space-y-2">
+      <div className="text-xs text-gray-500 mb-1">Using {bucket} bucket</div>
       <div
         className={`
           w-full h-32 border-2 border-dashed rounded-lg flex items-center justify-center text-gray-400 cursor-pointer transition-colors
