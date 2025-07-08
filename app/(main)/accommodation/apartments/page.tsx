@@ -1,9 +1,16 @@
+export const revalidate = 60; // Enable ISR, revalidate every 60 seconds
+
 import AccommodationCarousel from "@/src/components/accommodation/AccommodationCarousel"
 import AccommodationBookingForm from "@/src/components/accommodation/AccommodationBookingForm"
-import { supabase } from "@/src/lib/supabase"
+
+async function fetchApartments() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/accommodations?type=apartment`, { cache: 'no-store' })
+  if (!res.ok) return [];
+  return res.json();
+}
 
 export default async function ApartmentsPage() {
-  const { data: apartments, error } = await supabase.from("accommodations").select("*").eq("type", "apartment")
+  const apartments = await fetchApartments();
   const images = (apartments || []).map(apartment => ({
     id: apartment.id,
     src: apartment.images?.[0] || "/placeholder.svg",

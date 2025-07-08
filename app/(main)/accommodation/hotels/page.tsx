@@ -1,9 +1,16 @@
+export const revalidate = 60; // Enable ISR, revalidate every 60 seconds
+
 import AccommodationCarousel from "@/src/components/accommodation/AccommodationCarousel"
 import AccommodationBookingForm from "@/src/components/accommodation/AccommodationBookingForm"
-import { supabase } from "@/src/lib/supabase"
+
+async function fetchHotels() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/accommodations?type=hotel`, { cache: 'no-store' })
+  if (!res.ok) return [];
+  return res.json();
+}
 
 export default async function HotelsPage() {
-  const { data: hotels, error } = await supabase.from("accommodations").select("*").eq("type", "hotel")
+  const hotels = await fetchHotels();
   const images = (hotels || []).map(hotel => ({
     id: hotel.id,
     src: hotel.images?.[0] || "/placeholder.svg",
