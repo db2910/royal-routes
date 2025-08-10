@@ -124,7 +124,7 @@ export default function EventDetailPage() {
             {allImages.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold text-[#001934] mb-4">Gallery</h2>
-                <ImageCarousel images={allImages} />
+                <ImageCarousel images={allImages} altText={event.title} />
               </div>
             )}
 
@@ -186,10 +186,8 @@ export default function EventDetailPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-24">
               <BookThisTourForm 
-                eventTitle={event.title}
-                eventDate={event.date}
+                eventName={event.title}
                 pricePerPerson={event.price_per_person}
-                eventId={event.id}
               />
             </div>
           </div>
