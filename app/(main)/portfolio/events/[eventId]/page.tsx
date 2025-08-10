@@ -16,11 +16,12 @@ async function getEventDetails(eventId: string): Promise<PortfolioItem | undefin
 }
 
 type Props = {
-  params: { eventId: string }
+  params: Promise<{ eventId: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const event = await getEventDetails(params.eventId)
+  const { eventId } = await params
+  const event = await getEventDetails(eventId)
 
   if (!event) {
     return {
@@ -47,7 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function EventDetailPage({ params }: Props) {
-  const event = await getEventDetails(params.eventId)
+  const { eventId } = await params
+  const event = await getEventDetails(eventId)
 
   if (!event) {
     notFound()
