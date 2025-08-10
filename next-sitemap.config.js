@@ -65,6 +65,13 @@ module.exports = {
     })
     
     result.push({
+      loc: '/tours',
+      changefreq: 'weekly',
+      priority: 0.9,
+      lastmod: new Date().toISOString(),
+    })
+    
+    result.push({
       loc: '/services/car-rental',
       changefreq: 'weekly',
       priority: 0.9,

@@ -16,17 +16,17 @@ interface SEOHeadProps {
 }
 
 export default function SEOHead({
-  title = 'Royal Routes Tours - Premium Travel & Tourism in Rwanda',
-  description = 'Discover Rwanda with Royal Routes Tours. Premium car rentals, guided tours, luxury accommodations, and event management services. Experience the best of Rwanda with our expert travel services.',
-  keywords = 'Rwanda tours, car rental Rwanda, accommodation Rwanda, event management Rwanda, travel Rwanda, tourism Rwanda, gorilla trekking, Kigali tours, Lake Kivu, Volcanoes National Park',
+  title = 'Royal Routes Rwanda | Luxury Tours, Car Rentals & Gorilla Trekking',
+  description = 'Book luxury Rwanda tours with Royal Routes — expert-guided gorilla trekking, safaris in Akagera, Kigali city tours, premium car rentals, and handpicked accommodations for an unforgettable African journey.',
+  keywords = 'Rwanda tours, Rwanda luxury travel, gorilla trekking tours, Kigali car rental, Rwanda safari packages, Volcanoes National Park, Akagera National Park safaris, Nyungwe Forest tours, Rwanda vacation deals',
   image = '/images/hero/hero1.jpg',
   url = 'https://royalroutestours.com',
   type = 'website',
   publishedTime,
   modifiedTime,
-  author = 'Royal Routes Tours',
+  author = 'Royal Routes Rwanda',
   section,
-  tags = ['Rwanda', 'tourism', 'travel', 'tours', 'car rental', 'accommodation'],
+  tags = ['Rwanda tours', 'luxury travel', 'gorilla trekking', 'safari', 'car rental', 'accommodation', 'Volcanoes National Park', 'Akagera National Park', 'Nyungwe Forest'],
   structuredData
 }: SEOHeadProps) {
   const fullTitle = title.includes('Royal Routes') ? title : `${title} | Royal Routes Tours`
@@ -36,11 +36,11 @@ export default function SEOHead({
   // Default structured data for organization
   const defaultStructuredData = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Royal Routes Tours",
+    "@type": "TravelAgency",
+    "name": "Royal Routes Rwanda",
     "url": "https://royalroutestours.com",
     "logo": "https://royalroutestours.com/images/logo.jpeg",
-    "description": "Premium travel and tourism services in Rwanda",
+    "description": "Luxury travel agency specializing in Rwanda tours, gorilla trekking, safaris, car rentals, and premium accommodations",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "RW",
@@ -53,6 +53,18 @@ export default function SEOHead({
       "contactType": "customer service",
       "availableLanguage": ["English", "French", "Kinyarwanda"]
     },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Rwanda"
+    },
+    "serviceType": [
+      "Gorilla Trekking Tours",
+      "Safari Packages",
+      "Car Rental Services",
+      "Luxury Accommodations",
+      "City Tours",
+      "Adventure Travel"
+    ],
     "sameAs": [
       "https://facebook.com/royalroutestours",
       "https://instagram.com/royalroutestours",
@@ -81,7 +93,7 @@ export default function SEOHead({
       <meta property="og:image" content={fullImage} />
       <meta property="og:url" content={fullUrl} />
       <meta property="og:type" content={type} />
-      <meta property="og:site_name" content="Royal Routes Tours" />
+      <meta property="og:site_name" content="Royal Routes Rwanda" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter Card Meta Tags */}
