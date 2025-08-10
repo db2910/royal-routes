@@ -8,9 +8,10 @@ import TourCard from "@/src/components/TourCard"
 import CarCard from "@/src/components/CarCard"
 import BookingModal from "@/src/components/BookingModal"
 import { supabase } from "@/src/lib/supabase"
+import type { Tour } from "@/src/data/toursData"
 
 // Define types for better type safety
-interface Tour {
+interface DatabaseTour {
   id: string
   title: string
   short_description: string
@@ -29,7 +30,7 @@ interface Car {
   features: string[]
 }
 
-type SearchItem = Tour | Car
+type SearchItem = DatabaseTour | Car
 
 function SearchResults() {
   const searchParams = useSearchParams()
@@ -311,14 +312,13 @@ function SearchResults() {
                 searchType === "tour" ? (
                   <TourCard 
                     key={item.id} 
-                    imageUrl={(item as Tour).main_image || "/placeholder.svg"}
-                    title={(item as Tour).title}
-                    description={(item as Tour).short_description}
+                    imageUrl={(item as DatabaseTour).main_image || "/placeholder.svg"}
+                    title={(item as DatabaseTour).title}
+                    description={(item as DatabaseTour).short_description}
                     ctaText="Book"
                     ctaLink={`/tours/${item.id}`}
                     tourId={item.id}
-                    tour={item as Tour}
-                    onBookClick={handleOpenBookingModal} 
+                    onBookClick={() => handleOpenBookingModal(item)} 
                   />
                 ) : (
                   <CarCard key={item.id} car={item as Car} onBookClick={handleOpenBookingModal} />
@@ -349,7 +349,7 @@ function SearchResults() {
         isOpen={isModalOpen} 
         onClose={handleCloseBookingModal} 
         itemName={selectedItem ? ('title' in selectedItem ? selectedItem.title : selectedItem.name) : ""}
-        price={selectedItem ? (searchType === "tour" ? (selectedItem as Tour).price_per_person || 0 : (selectedItem as Car).price_per_day || 0) : 0}
+        price={selectedItem ? (searchType === "tour" ? (selectedItem as DatabaseTour).price_per_person || 0 : (selectedItem as Car).price_per_day || 0) : 0}
         type={searchType as "tour" | "car"}
       />
     </div>
