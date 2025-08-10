@@ -36,51 +36,51 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, itemName, 
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitStatus(null)
-    // Validate all fields
+    e.preventDefault();
+    setSubmitStatus(null);
     if (!formData.name || !formData.email || !formData.phone || !formData.message) {
-      setSubmitStatus({ type: "error", message: "Please fill in all fields." })
-      return
+      setSubmitStatus({ type: "error", message: "Please fill in all fields." });
+      return;
     }
     if (!itemName || !price || !formData.email) {
-      setSubmitStatus({ type: "error", message: "Booking error: missing required data. Please try again." })
-      return
+      setSubmitStatus({ type: "error", message: "Booking error: missing required data. Please try again." });
+      return;
     }
     if (type === "car" && (!formData.days || !formData.startDate)) {
-      setSubmitStatus({ type: "error", message: "Please enter number of days and start date." })
-      return
+      setSubmitStatus({ type: "error", message: "Please enter number of days and start date." });
+      return;
     }
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      const res = await fetch("/api/create-checkout-session", {
+      const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type,
           itemName,
-          price: total, // send total for all days/people
+          price: total,
           customerName: formData.name,
           customerEmail: formData.email,
           customerPhone: formData.phone,
           message: formData.message,
           days: type === "car" ? formData.days : undefined,
           startDate: type === "car" ? formData.startDate : undefined,
+          deposit,
+          total,
         }),
-      })
-      const data = await res.json()
-      if (res.ok && data.url) {
-        window.location.href = data.url
-        return
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSubmitStatus({ type: "success", message: "Booking request sent successfully!" });
       } else {
-        setSubmitStatus({ type: "error", message: data.error || "Failed to create payment session." })
+        setSubmitStatus({ type: "error", message: data.error || "Booking failed. Please try again." });
       }
     } catch (error: any) {
-      setSubmitStatus({ type: "error", message: error.message || "Booking failed. Please try again." })
+      setSubmitStatus({ type: "error", message: error.message || "Booking failed. Please try again." });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
@@ -179,14 +179,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, itemName, 
                 <>
                   <div>Total for {formData.days} day{formData.days > 1 ? "s" : ""}: <span className="font-bold">${(total || 0).toFixed(2)}</span></div>
                   <div>Deposit (50%): <span className="font-bold">${(deposit || 0).toFixed(2)}</span></div>
-                  <div className="text-xs text-gray-500 mt-1">You will pay the deposit now. The balance is due later.</div>
-                  <div className="text-xs text-red-700 mt-2 font-semibold">NB: After receiving your payment, we'll contact you to arrange delivery of the car.</div>
+                  <div className="text-xs text-gray-500 mt-1">This is the deposit amount. The balance is due later.</div>
+                  <div className="text-xs text-red-700 mt-2 font-semibold">NB: After receiving your booking, we'll contact you to arrange delivery of the car.</div>
                 </>
               ) : (
                 <>
                   <div>Total: <span className="font-bold">${(total || 0).toFixed(2)}</span></div>
                   <div>Deposit (50%): <span className="font-bold">${(deposit || 0).toFixed(2)}</span></div>
-                  <div className="text-xs text-gray-500 mt-1">You will pay the deposit now. The balance is due later.</div>
+                  <div className="text-xs text-gray-500 mt-1">This is the deposit amount. The balance is due later.</div>
                 </>
               )}
             </div>
@@ -200,7 +200,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, itemName, 
                   : "bg-[#B8860B] hover:bg-[#996f09] text-white shadow-md hover:shadow-lg"
               }`}
             >
-                {isSubmitting ? "Sending..." : "Send Booking Request"}
+                {isSubmitting ? "Booking..." : "Book Now"}
               </button>
               <button
                 type="button"

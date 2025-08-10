@@ -68,33 +68,36 @@ export default function AccommodationBookingForm({ type }: AccommodationBookingF
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!validate()) return
-
-    setIsSubmitting(true)
-    setSubmitStatus(null)
-    setStatusMessage("")
-
+    e.preventDefault();
+    if (!validate()) return;
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setStatusMessage("");
     try {
-      // Add accommodation type to form data
-      const fullFormData = {
-        ...formData,
-        accommodationType: type,
-        needTransport: needTransport,
-      }
-
-      // Send email using server action
-      const result = await sendFormEmail({
-        formType: isApartments ? "Apartment Booking" : "Hotel Booking",
-        formData: fullFormData,
-        userEmail: formData.email,
-        userName: formData.fullName,
-      })
-
-      if (result.success) {
-        setSubmitStatus("success")
-        setStatusMessage(result.message || "Booking request submitted successfully!")
-        // Reset form
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: type === "apartments" ? "apartment" : "hotel",
+          itemName: type === "apartments" ? "Apartment" : "Hotel",
+          price: formData.budget,
+          customerName: formData.fullName,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          message: `Rooms: ${formData.rooms}, Guests: ${formData.guests}, Checkin: ${formData.checkin}, Checkout: ${formData.checkout}, Pickup: ${formData.pickup}`,
+          rooms: formData.rooms,
+          guests: formData.guests,
+          checkin: formData.checkin,
+          checkout: formData.checkout,
+          budget: formData.budget,
+          needTransport: needTransport,
+          pickup: formData.pickup,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSubmitStatus("success");
+        setStatusMessage("Booking request submitted successfully! You'll receive a confirmation email shortly.");
         setFormData({
           fullName: "",
           phone: "",
@@ -106,20 +109,19 @@ export default function AccommodationBookingForm({ type }: AccommodationBookingF
           budget: "",
           needTransport: false,
           pickup: "",
-        })
-        setNeedTransport(false)
+        });
+        setNeedTransport(false);
       } else {
-        setSubmitStatus("error")
-        setStatusMessage(result.message || "Failed to submit booking request. Please try again.")
+        setSubmitStatus("error");
+        setStatusMessage(data.error || "Failed to submit booking request. Please try again.");
       }
-    } catch (error) {
-      setSubmitStatus("error")
-      setStatusMessage("An unexpected error occurred. Please try again later.")
-      console.error("Form submission error:", error)
+    } catch (error: any) {
+      setSubmitStatus("error");
+      setStatusMessage(error.message || "Failed to submit booking request. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8">
@@ -361,10 +363,10 @@ export default function AccommodationBookingForm({ type }: AccommodationBookingF
           {isSubmitting ? (
             <>
               <Loader2 size={20} className="mr-2 animate-spin" />
-              <span>Submitting...</span>
+              <span>Booking...</span>
             </>
           ) : (
-            "Submit Booking Request"
+            "Book Now"
           )}
         </button>
 

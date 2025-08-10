@@ -58,16 +58,13 @@ export default function BookThisTourForm({ eventName, pricePerPerson }: BookThis
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    if (!validate()) return
-
-    setIsSubmitting(true)
-    setSubmitStatus(null)
-    setStatusMessage("")
-
+    e.preventDefault();
+    if (!validate()) return;
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setStatusMessage("");
     try {
-      // Call Stripe API route
-      const res = await fetch("/api/create-checkout-session", {
+      const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,25 +74,28 @@ export default function BookThisTourForm({ eventName, pricePerPerson }: BookThis
           customerName: formData.name,
           customerEmail: formData.email,
           customerPhone: formData.phone,
+          message: formData.message,
           people: formData.people,
           arrivalDate: formData.arrivalDate,
-          message: formData.message,
+          deposit,
+          total: totalPrice,
         }),
-      })
-      const data = await res.json()
-      if (res.ok && data.url) {
-        window.location.href = data.url
-        return
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSubmitStatus("success");
+        setStatusMessage("Booking submitted! You'll receive a confirmation email shortly.");
       } else {
-        throw new Error(data.error || "Failed to create payment session")
+        setSubmitStatus("error");
+        setStatusMessage(data.error || "Failed to submit booking. Please try again.");
       }
-    } catch (error) {
-      setSubmitStatus("error")
-      setStatusMessage("❌ " + (error instanceof Error ? error.message : "Failed to submit booking. Please try again."))
+    } catch (error: any) {
+      setSubmitStatus("error");
+      setStatusMessage(error.message || "Failed to submit booking. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -236,7 +236,7 @@ export default function BookThisTourForm({ eventName, pricePerPerson }: BookThis
           <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-sm text-[#001934] mb-2">
             <div>Total price for {formData.people} {formData.people === 1 ? "person" : "people"}: <span className="font-bold">{formatPrice(totalPrice)}</span></div>
             <div>Deposit (50%): <span className="font-bold">{formatPrice(deposit)}</span></div>
-            <div className="text-xs text-gray-500 mt-1">You will pay the deposit now. The balance is due later.</div>
+            <div className="text-xs text-gray-500 mt-1">This is the deposit amount. The balance is due later.</div>
           </div>
         )}
 
@@ -264,10 +264,10 @@ export default function BookThisTourForm({ eventName, pricePerPerson }: BookThis
           {isSubmitting ? (
             <>
               <Loader2 size={18} className="mr-2 animate-spin" />
-              <span>Submitting...</span>
+              <span>Booking...</span>
             </>
           ) : (
-            "Submit Booking"
+            "Book Now"
           )}
         </button>
 
