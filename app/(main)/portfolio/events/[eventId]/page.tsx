@@ -260,7 +260,7 @@ export default async function EventDetailPage({ params }: Props) {
       </main>
 
       {/* Comments Section - Full Width */}
-      <EventCommentsSection eventId={params.eventId} eventTitle={event.title} />
+      <EventCommentsSection eventId={eventId} eventTitle={event.title} />
     </div>
   )
 }

@@ -9,11 +9,33 @@ import CarCard from "@/src/components/CarCard"
 import BookingModal from "@/src/components/BookingModal"
 import { supabase } from "@/src/lib/supabase"
 
+// Define types for better type safety
+interface Tour {
+  id: string
+  title: string
+  short_description: string
+  main_image: string
+  price_per_person: number
+  category: string
+  features: string[]
+}
+
+interface Car {
+  id: string
+  name: string
+  short_description: string
+  main_image: string
+  price_per_day: number
+  features: string[]
+}
+
+type SearchItem = Tour | Car
+
 function SearchResults() {
   const searchParams = useSearchParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [results, setResults] = useState<any[]>([])
+  const [selectedItem, setSelectedItem] = useState<SearchItem | null>(null)
+  const [results, setResults] = useState<SearchItem[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState({
@@ -27,7 +49,7 @@ function SearchResults() {
   const location = searchParams.get("location") || ""
 
   // Available features for filtering
-  const availableFeatures = {
+  const availableFeatures: Record<string, string[]> = {
     tour: ["Wildlife", "Culture", "Adventure", "Nature", "City", "Mountain", "Lake", "Forest"],
     car: ["AC", "GPS", "Bluetooth", "Leather Seats", "Sunroof", "4WD", "Automatic", "Manual"]
   }
@@ -99,25 +121,26 @@ function SearchResults() {
     if (searchType === "car") {
           filteredResults = filteredResults.map(car => ({
             ...car,
-            mainImage: car.main_image,
-            shortDescription: car.short_description,
-            pricePerDay: car.price_per_day,
-            galleryImages: car.gallery_images || [],
-            capabilities: car.capabilities || []
+            // Ensure all required fields are present
+            name: car.name || "Unknown Car",
+            short_description: car.short_description || "",
+            main_image: car.main_image || "/placeholder.svg",
+            price_per_day: car.price_per_day || 0,
+            features: car.features || []
           }))
         }
-        
+
         setResults(filteredResults)
-    }
+      }
     } catch (error) {
-      console.error("Error in fetchSearchResults:", error)
+      console.error("Error fetching search results:", error)
       setResults([])
     } finally {
       setLoading(false)
     }
   }
 
-  const handleOpenBookingModal = (item) => {
+  const handleOpenBookingModal = (item: SearchItem) => {
     setSelectedItem(item)
     setIsModalOpen(true)
   }
@@ -127,14 +150,14 @@ function SearchResults() {
     setSelectedItem(null)
   }
 
-  const handleFilterChange = (filterType, value) => {
+  const handleFilterChange = (filterType: string, value: string) => {
     setFilters(prev => ({
       ...prev,
       [filterType]: value
     }))
   }
 
-  const handleFeatureToggle = (feature) => {
+  const handleFeatureToggle = (feature: string) => {
     setFilters(prev => ({
       ...prev,
       features: prev.features.includes(feature)
@@ -212,23 +235,23 @@ function SearchResults() {
                       <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="number"
-                        placeholder="0"
                         value={filters.minPrice}
                         onChange={(e) => handleFilterChange("minPrice", e.target.value)}
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-[#B8860B] focus:border-[#B8860B]"
+                        placeholder="0"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-[#B8860B] focus:border-[#B8860B]"
                       />
                     </div>
                   </div>
-                <div>
+                  <div>
                     <label className="block text-xs text-gray-600 mb-1">Max Price</label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="number"
-                        placeholder="1000"
                         value={filters.maxPrice}
                         onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-[#B8860B] focus:border-[#B8860B]"
+                        placeholder="1000"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-[#B8860B] focus:border-[#B8860B]"
                       />
                     </div>
                   </div>
@@ -256,7 +279,7 @@ function SearchResults() {
                 <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-3">Features</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {availableFeatures[searchType].map(feature => (
+                  {availableFeatures[searchType]?.map((feature: string) => (
                     <label key={feature} className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -284,21 +307,21 @@ function SearchResults() {
             </div>
           ) : results.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {results.map((item) => (
+              {results.map((item: SearchItem) => (
                 searchType === "tour" ? (
                   <TourCard 
                     key={item.id} 
-                    imageUrl={item.main_image || "/placeholder.svg"}
-                    title={item.title}
-                    description={item.short_description}
+                    imageUrl={(item as Tour).main_image || "/placeholder.svg"}
+                    title={(item as Tour).title}
+                    description={(item as Tour).short_description}
                     ctaText="Book"
                     ctaLink={`/tours/${item.id}`}
                     tourId={item.id}
-                    tour={item}
+                    tour={item as Tour}
                     onBookClick={handleOpenBookingModal} 
                   />
                 ) : (
-                  <CarCard key={item.id} car={item} onBookClick={handleOpenBookingModal} />
+                  <CarCard key={item.id} car={item as Car} onBookClick={handleOpenBookingModal} />
                 )
               ))}
             </div>
@@ -325,9 +348,9 @@ function SearchResults() {
       <BookingModal 
         isOpen={isModalOpen} 
         onClose={handleCloseBookingModal} 
-        itemName={selectedItem?.title || selectedItem?.name || ""}
-        price={searchType === "tour" ? (selectedItem?.price_per_person || 0) : (selectedItem?.price_per_day || 0)}
-        type={searchType}
+        itemName={selectedItem ? ('title' in selectedItem ? selectedItem.title : selectedItem.name) : ""}
+        price={selectedItem ? (searchType === "tour" ? (selectedItem as Tour).price_per_person || 0 : (selectedItem as Car).price_per_day || 0) : 0}
+        type={searchType as "tour" | "car"}
       />
     </div>
   )
