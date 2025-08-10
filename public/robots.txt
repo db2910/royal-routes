@@ -6,9 +6,15 @@ Allow: /
 User-agent: *
 Disallow: /admin
 Disallow: /api
+Disallow: /_next
+Disallow: /test-*
 
 # Host
 Host: https://royalroutestours.com
 
 # Sitemaps
 Sitemap: https://royalroutestours.com/sitemap.xml
+Sitemap: https://royalroutestours.com/tours-sitemap.xml
+Sitemap: https://royalroutestours.com/cars-sitemap.xml
+Sitemap: https://royalroutestours.com/accommodations-sitemap.xml
+Sitemap: https://royalroutestours.com/events-sitemap.xml

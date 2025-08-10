@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "next-sitemap",
-    "sitemap": "next-sitemap"
+    "postbuild": "next-sitemap && node scripts/generate-dynamic-sitemaps.js",
+    "sitemap": "next-sitemap",
+    "generate-sitemaps": "node scripts/generate-dynamic-sitemaps.js"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",

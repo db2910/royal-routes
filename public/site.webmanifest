@@ -1,0 +1,21 @@
+{
+  "name": "Royal Routes Tours",
+  "short_name": "Royal Routes",
+  "description": "Premium travel and tourism services in Rwanda",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#001934",
+  "theme_color": "#B8860B",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
