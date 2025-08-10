@@ -5,31 +5,55 @@ import CarCard from "./CarCard"
 import { supabase } from "@/src/lib/supabase"
 import type { Car } from "@/src/data/carsData"
 
-export default function OurFleetSection() {
+interface OurFleetSectionProps {
+  initialCars?: any[]
+}
+
+export default function OurFleetSection({ initialCars = [] }: OurFleetSectionProps) {
   const [visibleCars, setVisibleCars] = useState(6)
-  const [cars, setCars] = useState<any[]>([])
+  const [cars, setCars] = useState<any[]>(() => {
+    // Use initial data if provided, otherwise fetch
+    if (initialCars.length > 0) {
+      const iconMap = ["users", "fuel", "settings", "snowflake", "wind", "leaf"]
+      return initialCars.map((car: any) => ({
+        ...car,
+        mainImage: car.main_image,
+        galleryImages: car.gallery_images,
+        shortDescription: car.short_description,
+        detailedDescription: car.detailed_description,
+        capabilities: (car.features || []).map((feature: any, i: any) => ({
+          icon: iconMap[i % iconMap.length],
+          text: feature,
+        })),
+      }))
+    }
+    return []
+  })
 
   useEffect(() => {
-    async function fetchCars() {
-      const { data, error } = await supabase.from("cars").select("*")
-      if (!error) {
-        const iconMap = ["users", "fuel", "settings", "snowflake", "wind", "leaf"]
-        const mapped = (data || []).map((car: any) => ({
-          ...car,
-          mainImage: car.main_image,
-          galleryImages: car.gallery_images,
-          shortDescription: car.short_description,
-          detailedDescription: car.detailed_description,
-          capabilities: (car.features || []).map((feature: any, i: any) => ({
-            icon: iconMap[i % iconMap.length],
-            text: feature,
-          })),
-        }))
-        setCars(mapped.filter(car => car.is_active))
+    // Only fetch if no initial data provided
+    if (initialCars.length === 0) {
+      async function fetchCars() {
+        const { data, error } = await supabase.from("cars").select("*")
+        if (!error) {
+          const iconMap = ["users", "fuel", "settings", "snowflake", "wind", "leaf"]
+          const mapped = (data || []).map((car: any) => ({
+            ...car,
+            mainImage: car.main_image,
+            galleryImages: car.gallery_images,
+            shortDescription: car.short_description,
+            detailedDescription: car.detailed_description,
+            capabilities: (car.features || []).map((feature: any, i: any) => ({
+              icon: iconMap[i % iconMap.length],
+              text: feature,
+            })),
+          }))
+          setCars(mapped.filter(car => car.is_active))
+        }
       }
+      fetchCars()
     }
-    fetchCars()
-  }, [])
+  }, [initialCars.length])
 
   const handleLoadMore = () => {
     setVisibleCars((prev) => Math.min(prev + 2, cars.length))

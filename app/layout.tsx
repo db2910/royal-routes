@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import PerformanceMonitor from "@/src/components/PerformanceMonitor"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -55,6 +56,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
+          <PerformanceMonitor />
         </ThemeProvider>
       </body>
     </html>

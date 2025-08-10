@@ -5,28 +5,35 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import TourCard from "./TourCard"
 import { supabase } from "@/src/lib/supabase"
 
-export default function FeaturedAdventuresSection() {
+interface FeaturedAdventuresSectionProps {
+  initialTours?: any[]
+}
+
+export default function FeaturedAdventuresSection({ initialTours = [] }: FeaturedAdventuresSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [tours, setTours] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [tours, setTours] = useState<any[]>(initialTours)
+  const [loading, setLoading] = useState(initialTours.length === 0)
 
   useEffect(() => {
-    const fetchTours = async () => {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from("tours")
-        .select("id, title, short_description, main_image, is_active")
-        .eq("is_active", true)
-        .limit(4)
-      if (!error && data) {
-        setTours(data)
-      } else {
-        setTours([])
+    // Only fetch if no initial data provided
+    if (initialTours.length === 0) {
+      const fetchTours = async () => {
+        setLoading(true)
+        const { data, error } = await supabase
+          .from("tours")
+          .select("id, title, short_description, main_image, is_active")
+          .eq("is_active", true)
+          .limit(4)
+        if (!error && data) {
+          setTours(data)
+        } else {
+          setTours([])
+        }
+        setLoading(false)
       }
-      setLoading(false)
+      fetchTours()
     }
-    fetchTours()
-  }, [])
+  }, [initialTours.length])
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {

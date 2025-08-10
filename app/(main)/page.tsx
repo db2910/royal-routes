@@ -1,50 +1,29 @@
-"use client"
-
-import { useState, useEffect } from "react"
+import { Suspense } from "react"
 import HeroSection from "@/src/components/HeroSection"
 import AboutUsSection from "@/src/components/AboutUsSection"
 import FeaturedAdventuresSection from "@/src/components/FeaturedAdventuresSection"
 import OurFleetSection from "@/src/components/OurFleetSection"
 import PartnersSection from "@/src/components/PartnersSection"
-import BookingModal from "@/src/components/BookingModal"
-import { Car } from "@/src/data/carsData"
-import { Tour } from "@/src/data/toursData"
+import { createClient } from "@/src/lib/supabase-server"
 
-export default function HomePage() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<{
-    name: string
-    price: number
-    type: "car" | "tour"
-  } | null>(null)
+// Server-side data fetching
+async function getHomePageData() {
+  const supabase = createClient()
+  
+  // Fetch cars and tours in parallel
+  const [carsResponse, toursResponse] = await Promise.all([
+    supabase.from("cars").select("*").eq("is_active", true).limit(6),
+    supabase.from("tours").select("id, title, short_description, main_image, is_active").eq("is_active", true).limit(4)
+  ])
 
-  // Scroll to top on page load
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  // Accepts a car or tour object and opens the modal with correct info
-  const handleOpenBookingModal = (item: Car | Tour) => {
-    if ("pricePerDay" in item) {
-      // Car
-      const price = typeof item.pricePerDay === "string"
-        ? parseFloat(item.pricePerDay.replace(/[^0-9.]/g, ""))
-        : item.pricePerDay ?? 0
-      setSelectedItem({ name: item.name, price, type: "car" })
-    } else if ("pricePerPerson" in item) {
-      // Tour
-      const price = typeof item.pricePerPerson === "string"
-        ? parseFloat(item.pricePerPerson.replace(/[^0-9.]/g, ""))
-        : item.pricePerPerson ?? 0
-      setSelectedItem({ name: item.title, price, type: "tour" })
-    }
-    setIsModalOpen(true)
+  return {
+    cars: carsResponse.data || [],
+    tours: toursResponse.data || []
   }
+}
 
-  const handleCloseBookingModal = () => {
-    setIsModalOpen(false)
-    setSelectedItem(null)
-  }
+export default async function HomePage() {
+  const { cars, tours } = await getHomePageData()
 
   return (
     <div>
@@ -55,22 +34,17 @@ export default function HomePage() {
       <AboutUsSection />
 
       {/* Featured Adventures */}
-      <FeaturedAdventuresSection onBookClick={handleOpenBookingModal} />
+      <Suspense fallback={<div className="py-16 lg:py-24 bg-gray-50"><div className="text-center">Loading featured adventures...</div></div>}>
+        <FeaturedAdventuresSection initialTours={tours} />
+      </Suspense>
 
       {/* Our Fleet */}
-      <OurFleetSection onBookClick={handleOpenBookingModal} />
+      <Suspense fallback={<div className="py-16 lg:py-24 bg-white"><div className="text-center">Loading fleet...</div></div>}>
+        <OurFleetSection initialCars={cars} />
+      </Suspense>
 
       {/* Partners Section */}
       <PartnersSection />
-
-      {/* Booking Modal */}
-      <BookingModal
-        isOpen={isModalOpen}
-        onClose={handleCloseBookingModal}
-        itemName={selectedItem?.name || ""}
-        price={selectedItem?.price ?? 0}
-        type={selectedItem?.type || "car"}
-      />
     </div>
   )
 }
