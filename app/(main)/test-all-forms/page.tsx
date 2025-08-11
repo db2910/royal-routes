@@ -168,7 +168,9 @@ export default function TestAllFormsPage() {
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={() => setIsBookingModalOpen(false)}
-        selectedItemName={selectedItem}
+        itemName={selectedItem}
+        price={0}
+        type="tour"
       />
     </div>
   )
