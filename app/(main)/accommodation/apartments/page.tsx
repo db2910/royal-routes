@@ -11,7 +11,7 @@ async function fetchApartments() {
 
 export default async function ApartmentsPage() {
   const apartments = await fetchApartments();
-  const images = (apartments || []).map(apartment => ({
+  const images = (apartments || []).map((apartment: any) => ({
     id: apartment.id,
     src: apartment.images?.[0] || "/placeholder.svg",
     caption: apartment.name,

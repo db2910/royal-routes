@@ -11,7 +11,7 @@ async function fetchHotels() {
 
 export default async function HotelsPage() {
   const hotels = await fetchHotels();
-  const images = (hotels || []).map(hotel => ({
+  const images = (hotels || []).map((hotel: any) => ({
     id: hotel.id,
     src: hotel.images?.[0] || "/placeholder.svg",
     caption: hotel.name,
