@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/src/lib/supabase"
 
 export default function TestSearchPage() {
-  const [tours, setTours] = useState([])
-  const [cars, setCars] = useState([])
+  const [tours, setTours] = useState<any[]>([])
+  const [cars, setCars] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
