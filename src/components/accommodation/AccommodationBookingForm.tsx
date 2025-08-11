@@ -90,7 +90,7 @@ export default function AccommodationBookingForm({ type }: AccommodationBookingF
           checkin: formData.checkin,
           checkout: formData.checkout,
           budget: formData.budget,
-          needTransport: needTransport,
+        needTransport: needTransport,
           pickup: formData.pickup,
         }),
       });

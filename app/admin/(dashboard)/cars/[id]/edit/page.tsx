@@ -78,8 +78,8 @@ export default function EditCarPage() {
   const handleMainImageUpload = (url: string) => {
     setForm(f => ({ ...f, main_image: url }))
   }
-  const handleGalleryImageUpload = (url: string) => {
-    setForm(f => ({ ...f, gallery_images: [...f.gallery_images, url] }))
+  const handleGalleryImageUpload = (urls: string[]) => {
+    setForm(f => ({ ...f, gallery_images: [...f.gallery_images, ...urls] }))
   }
   const handleRemoveGalleryImage = (idx: number) => {
     setForm(f => ({ ...f, gallery_images: f.gallery_images.filter((_, i) => i !== idx) }))
@@ -99,7 +99,7 @@ export default function EditCarPage() {
     setLoading(true)
     setError("")
     setSuccess("")
-    const { id, ...formWithoutId } = form
+    const formWithoutId = form
     const { error } = await supabase.from("cars").update({
       ...formWithoutId,
       year: Number(form.year),

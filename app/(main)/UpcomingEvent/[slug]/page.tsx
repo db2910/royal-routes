@@ -87,8 +87,8 @@ export default function EventDetailPage() {
             {/* Event Title and Basic Info */}
             <div>
               <h1 className="text-4xl sm:text-5xl font-bold text-[#001934] font-arizona mb-4">
-                {event.title}
-              </h1>
+            {event.title}
+          </h1>
               <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-6">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
@@ -156,28 +156,28 @@ export default function EventDetailPage() {
               {event.included && event.included.length > 0 && (
                 <div>
                   <h2 className="text-2xl font-bold text-[#001934] mb-4">What's Included</h2>
-                  <ul className="space-y-2">
-                    {event.included.map((item, index) => (
+                <ul className="space-y-2">
+                  {event.included.map((item, index) => (
                       <li key={index} className="flex items-center gap-2 text-gray-700">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               )}
               {event.excluded && event.excluded.length > 0 && (
                 <div>
                   <h2 className="text-2xl font-bold text-[#001934] mb-4">What's Not Included</h2>
-                  <ul className="space-y-2">
-                    {event.excluded.map((item, index) => (
+                <ul className="space-y-2">
+                  {event.excluded.map((item, index) => (
                       <li key={index} className="flex items-center gap-2 text-gray-700">
                         <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                         {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               )}
             </div>
           </div>

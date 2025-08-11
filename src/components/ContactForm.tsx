@@ -104,7 +104,7 @@ export default function ContactForm() {
       })
 
       console.log("Form submission result:", result)
-      setDebugInfo(result.debug || result)
+      setDebugInfo(result)
 
       if (result.success) {
         setSubmitStatus("success")

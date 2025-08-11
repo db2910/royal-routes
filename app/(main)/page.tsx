@@ -8,7 +8,7 @@ import { createClient } from "@/src/lib/supabase-server"
 
 // Server-side data fetching
 async function getHomePageData() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Fetch cars and tours in parallel
   const [carsResponse, toursResponse] = await Promise.all([
