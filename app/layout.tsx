@@ -5,6 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import PerformanceMonitor from "@/src/components/PerformanceMonitor"
+import FaviconLoader from "@/src/components/FaviconLoader"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -65,6 +66,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <FaviconLoader />
           {children}
           <Toaster />
           <PerformanceMonitor />
