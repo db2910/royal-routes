@@ -69,13 +69,13 @@ export async function testEmailConnection() {
 
     return {
       success: true,
-      emailId: result.id,
+      emailId: result,
       message: "Test email sent successfully! Check donkyleben@gmail.com for the test email.",
       details: {
         hasApiKey: true,
         apiKeyLength: apiKey.length,
         environment: process.env.NODE_ENV || "unknown",
-        emailId: result.id,
+        emailId: result,
         sender: DEFAULT_FROM_EMAIL,
         recipient: ADMIN_EMAIL,
         timestamp: new Date().toISOString(),

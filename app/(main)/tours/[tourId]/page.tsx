@@ -33,9 +33,9 @@ const ItineraryItem = ({
 export default function TourDetailPage() {
   const params = useParams()
   const tourId = params.tourId
-  const [tour, setTour] = useState(null)
+  const [tour, setTour] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [openItineraryDay, setOpenItineraryDay] = useState(1)
+  const [openItineraryDay, setOpenItineraryDay] = useState<number | null>(1)
 
   useEffect(() => {
     setIsLoading(true)
@@ -49,7 +49,7 @@ export default function TourDetailPage() {
     fetchTour()
   }, [tourId])
 
-  const toggleItineraryDay = (day) => {
+  const toggleItineraryDay = (day: number) => {
     setOpenItineraryDay(openItineraryDay === day ? null : day)
   }
 
@@ -141,7 +141,7 @@ export default function TourDetailPage() {
               <section className="mt-8 py-8 border-t border-gray-200">
                 <h2 className="text-2xl font-bold text-[#001934] mb-6 font-arizona">Daily Itinerary</h2>
                 <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-                  {itinerary.map((item) => (
+                  {itinerary.map((item: any) => (
                     <ItineraryItem
                       key={item.day}
                       day={item.day}
@@ -161,7 +161,7 @@ export default function TourDetailPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-[#001934] mb-4 font-arizona">What's Included</h2>
                     <ul className="space-y-2">
-                      {tour.included.map((item, index) => (
+                      {tour.included.map((item: any, index: number) => (
                         <li key={index} className="flex items-start">
                           <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-700">{item}</span>
@@ -174,7 +174,7 @@ export default function TourDetailPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-[#001934] mb-4 font-arizona">What's Excluded</h2>
                     <ul className="space-y-2">
-                      {tour.excluded.map((item, index) => (
+                      {tour.excluded.map((item: any, index: number) => (
                         <li key={index} className="flex items-start">
                           <XCircle className="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-700">{item}</span>

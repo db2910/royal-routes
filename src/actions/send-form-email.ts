@@ -142,8 +142,8 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
 
     return {
       success: true,
-      adminEmailId: adminResult.id,
-      userEmailId: userResult.id,
+      adminEmailId: adminResult,
+      userEmailId: userResult,
       emailSent: true,
       message:
         "✅ Your form has been submitted successfully! We've sent you a confirmation email and our team will contact you soon.",

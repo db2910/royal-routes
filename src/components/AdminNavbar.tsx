@@ -6,7 +6,7 @@ import {
   LogOut, 
   Menu, 
   X,
-  Dashboard,
+  LayoutDashboard,
   MapPin,
   Car,
   Building,
@@ -30,7 +30,7 @@ export default function AdminNavbar({ user, currentPage }: AdminNavbarProps) {
   }
 
   const navigation = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: Dashboard },
+    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Tours", href: "/admin/tours", icon: MapPin },
     { name: "Cars", href: "/admin/cars", icon: Car },
     { name: "Accommodations", href: "/admin/accommodations", icon: Building },
