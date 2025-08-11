@@ -13,6 +13,17 @@ export const metadata: Metadata = {
   description: "Book luxury Rwanda tours with Royal Routes — expert-guided gorilla trekking, safaris in Akagera, Kigali city tours, premium car rentals, and handpicked accommodations for an unforgettable African journey.",
   keywords: "Rwanda tours, Rwanda luxury travel, gorilla trekking tours, Kigali car rental, Rwanda safari packages, Volcanoes National Park, Akagera National Park safaris, Nyungwe Forest tours, Rwanda vacation deals",
   authors: [{ name: "Royal Routes" }],
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+  },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: "Royal Routes Rwanda | Luxury Tours, Car Rentals & Gorilla Trekking",
     description: "Luxury travel packages in Rwanda — safaris, gorilla trekking, Kigali car rentals, and premium stays. Plan your trip with Royal Routes today.",
