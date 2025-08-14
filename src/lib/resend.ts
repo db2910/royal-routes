@@ -9,9 +9,13 @@ if (!apiKey && process.env.NODE_ENV === "development") {
 // Initialize Resend with API key
 export const resend = new Resend(apiKey)
 
-// Use Resend's default sender domain
-export const DEFAULT_FROM_EMAIL = "noreply@royalroutestours.com"
+// Use verified domain for better deliverability
+export const DEFAULT_FROM_EMAIL = "info@royalroutestours.com"
 export const ADMIN_EMAIL = "royalroute85@gmail.com"
+
+// Alternative fallback emails
+export const FALLBACK_FROM_EMAIL = "hello@royalroutestours.com"
+export const SUPPORT_EMAIL = "support@royalroutestours.com"
 
 // Email sending status check
 export const isEmailConfigured = () => {

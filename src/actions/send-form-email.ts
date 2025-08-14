@@ -1,6 +1,7 @@
 "use server"
 
 import { resend, DEFAULT_FROM_EMAIL, ADMIN_EMAIL } from "@/src/lib/resend"
+import { sendAuthenticatedEmail, isValidEmail, sanitizeEmailContent } from "@/src/lib/email-utils"
 
 interface SendFormEmailProps {
   formType: string
@@ -24,7 +25,12 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
   }
 
   try {
-    console.log(`Sending ${formType} emails using default Resend domain...`)
+    console.log(`Sending ${formType} emails with improved authentication...`)
+
+    // Validate email addresses
+    if (!isValidEmail(userEmail)) {
+      throw new Error("Invalid user email address")
+    }
 
     const submittedAt = new Date().toLocaleString("en-US", {
       weekday: "long",
@@ -36,12 +42,13 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
       timeZoneName: "short",
     })
 
-    // Create admin notification email
-    const adminEmailHtml = `
+    // Create admin notification email with sanitized content
+    const adminEmailHtml = sanitizeEmailContent(`
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>New ${formType} Submission</title>
       </head>
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -59,8 +66,7 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
           </div>
           
           <h2 style="color: #001934;">📝 Form Details</h2>
-          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            ${Object.entries(formData)
+          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">${Object.entries(formData)
               .map(([key, value]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`)
               .join("")}
           </div>
@@ -71,7 +77,7 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
         </div>
       </body>
       </html>
-    `
+    `)
 
     // Create user confirmation email
     const userEmailHtml = `
@@ -118,24 +124,30 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
       </html>
     `
 
-    // Send admin notification
+    // Send admin notification with improved authentication
     console.log("Sending admin notification...")
-    const adminResult = await resend.emails.send({
-      from: DEFAULT_FROM_EMAIL,
+    const adminResult = await sendAuthenticatedEmail({
       to: ADMIN_EMAIL,
       subject: `🏔️ New ${formType} Submission from ${userName}`,
       html: adminEmailHtml,
+      headers: {
+        "X-Category": "form-submission",
+        "X-Priority": "1"
+      }
     })
 
     console.log("Admin email sent:", adminResult)
 
-    // Send user confirmation
+    // Send user confirmation with improved authentication
     console.log("Sending user confirmation...")
-    const userResult = await resend.emails.send({
-      from: DEFAULT_FROM_EMAIL,
+    const userResult = await sendAuthenticatedEmail({
       to: userEmail,
       subject: `Thank you for your ${formType} submission - Royal Routes`,
       html: userEmailHtml,
+      headers: {
+        "X-Category": "user-confirmation",
+        "X-Priority": "3"
+      }
     })
 
     console.log("User email sent:", userResult)
