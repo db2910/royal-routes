@@ -109,9 +109,9 @@ export async function sendFormEmail({ formType, formData, userEmail, userName }:
           
           <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd;">
             <h3 style="margin-top: 0; color: #001934;">📞 Need immediate assistance?</h3>
-            <p style="margin: 5px 0;">Phone: +250 788 123 456</p>
-            <p style="margin: 5px 0;">Email: info@royalroutes.com</p>
-            <p style="margin: 5px 0;">WhatsApp: +250 788 123 456</p>
+            <p style="margin: 5px 0;">Phone: +250 788 547 440</p>
+            <p style="margin: 5px 0;">Email: info@royalroutestours.com</p>
+            <p style="margin: 5px 0;">WhatsApp: +250 788 547 440</p>
           </div>
           
           <p style="margin-top: 30px;">Best regards,<br><strong>The Royal Routes Team</strong></p>

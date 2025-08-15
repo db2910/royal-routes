@@ -158,7 +158,7 @@ export default function TestAllFormsPage() {
           <p className="text-gray-600">
             If you encounter any issues during testing, contact us at:
             <br />
-            <strong>Email:</strong> donkyleben@gmail.com | <strong>Phone:</strong> +250 788 123 456
+                            <strong>Email:</strong> donkyleben@gmail.com | <strong>Phone:</strong> +250 788 547 440
           </p>
         </div>
       </div>

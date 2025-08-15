@@ -239,7 +239,7 @@ export default async function EventDetailPage({ params }: Props) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm text-gray-200">Call us</p>
-                        <p className="font-semibold text-sm sm:text-base break-all">+250 788 123 456</p>
+                        <p className="font-semibold text-sm sm:text-base break-all">+250 788 547 440</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">

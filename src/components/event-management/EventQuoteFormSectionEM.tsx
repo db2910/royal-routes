@@ -293,7 +293,7 @@ export default function EventQuoteFormSectionEM({
                 <p className="font-medium">Quote Submission Failed</p>
               </div>
               <p>{statusMessage}</p>
-              <p className="text-xs mt-2 text-red-200">📞 You can also call us directly at +250 788 123 456</p>
+                              <p className="text-xs mt-2 text-red-200">📞 You can also call us directly at +250 788 547 440</p>
             </div>
           )}
 

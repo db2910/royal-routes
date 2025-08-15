@@ -155,7 +155,7 @@ export default function PlanTripForm({ isOpen, onClose }: PlanTripFormProps) {
       console.error("Trip planning form submission error:", error)
       setSubmitStatus({
         type: "error",
-        message: `❌ ${error instanceof Error ? error.message : "Failed to submit request"}. Please try again or contact us at +250 788 123 456.`,
+        message: `❌ ${error instanceof Error ? error.message : "Failed to submit request"}. Please try again or contact us at +250 788 547 440.`,
       })
     } finally {
       setIsSubmitting(false)

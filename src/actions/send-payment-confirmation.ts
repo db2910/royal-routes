@@ -86,9 +86,9 @@ export async function sendPaymentConfirmation({
           
           <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd;">
             <h3 style="margin-top: 0; color: #001934;">📞 Need assistance?</h3>
-            <p style="margin: 5px 0;">Phone: +250 788 123 456</p>
-            <p style="margin: 5px 0;">Email: info@royalroutes.com</p>
-            <p style="margin: 5px 0;">WhatsApp: +250 788 123 456</p>
+            <p style="margin: 5px 0;">Phone: +250 788 547 440</p>
+            <p style="margin: 5px 0;">Email: info@royalroutestours.com</p>
+            <p style="margin: 5px 0;">WhatsApp: +250 788 547 440</p>
           </div>
           
           <p style="margin-top: 30px;">Thank you for choosing Royal Routes!<br><strong>The Royal Routes Team</strong></p>

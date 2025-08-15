@@ -150,7 +150,7 @@ export const sampleEventPageData: EventPageData = {
     fullNameLabel: "Full Name",
     fullNamePlaceholder: "Enter your full name",
     phoneLabel: "Phone Number",
-    phonePlaceholder: "e.g., +250 788 123 456",
+    phonePlaceholder: "e.g., +250 788 547 440",
     emailLabel: "Email Address",
     emailPlaceholder: "Enter your email address",
     eventTypeLabel: "Event Type",

@@ -48,8 +48,8 @@ export default function UserConfirmationEmail({ formType, userName }: UserConfir
           </Text>
 
           <Section style={styles.contactSection}>
-            <Text style={styles.contactItem}>📞 Phone: +250 788 123 456</Text>
-            <Text style={styles.contactItem}>✉️ Email: info@royalroutes.com</Text>
+            <Text style={styles.contactItem}>📞 Phone: +250 788 547 440</Text>
+            <Text style={styles.contactItem}>✉️ Email: info@royalroutestours.com</Text>
           </Section>
 
           <Section style={styles.ctaSection}>
